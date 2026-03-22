@@ -1,0 +1,35 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "main": "server.js",
+  "author": "LT Soluciones Tecnológicas",
+  "website": "https://ltsoluciones.com.mx",
+  "private": true,
+  "scripts": {
+    "test": "jest",
+    "start": "nodemon server.js"
+  },
+  "dependencies": {
+    "axios": "^1.7.4",
+    "bcrypt": "^5.1.0",
+    "core-js": "^3.37.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "express-session": "^1.18.0",
+    "firebase-admin": "^12.5.0",
+    "http-status-codes": "^2.3.0",
+    "jsonwebtoken": "^9.0.0",
+    "moment-timezone": "^0.5.43",
+    "multer": "^1.4.5-lts.1",
+    "nodemon": "^3.1.0",
+    "pdfkit": "^0.15.0",
+    "pdfkit-table": "^0.1.99",
+    "pg": "^8.11.5",
+    "sequelize": "^6.37.3",
+    "supertest": "^7.0.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}
