@@ -1,4 +1,4 @@
-const multer = require('multer');
+/* const multer = require('multer');
 const { bucket } = require('../config/firebase.config');
 const util = require('util');
 
@@ -84,4 +84,41 @@ async function uploadToFirebaseStorage(req, res, next) {
   }
 } */
 
-module.exports = uploadToFirebaseStorage;
+  const multer = require("multer");
+const { getStorage } = require("firebase-admin/storage");
+const getFirebaseApp = require("../config/firebase.config");
+const app = getFirebaseApp();
+const bucket = getStorage(app).bucket();
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
+
+const uploadToFirebase = async (req, res, next) => {
+  try {
+    if (!req.file) return next();
+
+    const app = getFirebaseApp();
+    const bucket = getStorage(app).bucket();
+
+    const fileName = `vehiculos/${Date.now()}-${req.file.originalname}`;
+    const file = bucket.file(fileName);
+
+    await file.save(req.file.buffer, {
+      metadata: {
+        contentType: req.file.mimetype
+      }
+    });
+
+    await file.makePublic();
+
+    req.firebaseUrl = `https://storage.googleapis.com/${bucket.name}/${fileName}`;
+    next();
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = {
+  upload,
+  uploadToFirebase
+};
+

@@ -1,11 +1,25 @@
-const admin = require('firebase-admin');
-const serviceAccount = require('../../rentauto-dced6-firebase-adminsdk-d0ug3-7f6b73c66d.json');
+const admin = require("firebase-admin");
+const raw = process.env.FIREBASE_SERVICE_ACCOUNT;
+const serviceAccount = JSON.parse(raw);
 
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  storageBucket: 'gs://rentauto-dced6.appspot.com'
-});
+let app;
 
-const bucket = admin.storage().bucket();
+function getFirebaseApp() {
+  if (app) return app;
 
-module.exports = { admin, bucket };
+  const raw = process.env.FIREBASE_SERVICE_ACCOUNT;
+  if (!raw) {
+    throw new Error("Falta FIREBASE_SERVICE_ACCOUNT");
+  }
+
+  const serviceAccount = JSON.parse(raw);
+
+  app = admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+    storageBucket: process.env.FIREBASE_STORAGE_BUCKET
+  });
+
+  return app;
+}
+
+module.exports = getFirebaseApp;
