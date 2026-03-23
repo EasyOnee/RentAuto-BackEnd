@@ -2,7 +2,7 @@ const multer = require('multer');
 const { bucket } = require('../config/firebase.config');
 const util = require('util');
 
-const maxSize = 2 * 1024 * 1024;
+/* const maxSize = 2 * 1024 * 1024;
 
 // Configuración de Multer para el almacenamiento en memoria
 const storage = multer.memoryStorage();
@@ -46,7 +46,7 @@ function generateUniqueFilename(originalName) {
   const random = Math.floor(Math.random() * 1000000000);
   const extension = /[^.]+$/.exec(originalName)[0];
   return `${random}.${extension}`;
-}
+} */
 
 /* 
 // Función para subir archivos a Firebase Storage
