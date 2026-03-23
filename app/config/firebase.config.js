@@ -1,25 +1,27 @@
-const admin = require("firebase-admin");
-const raw = process.env.FIREBASE_SERVICE_ACCOUNT;
-const serviceAccount = JSON.parse(raw);
+// app/config/firebase.config.js
+const admin = require('firebase-admin');
+const path  = require('path');
 
-let app;
+/**
+ * Railway → Variables (type: File) → FIREBASE_CREDENTIALS
+ * Si corres localmente, pon process.env.FIREBASE_CREDENTIALS=./ruta/clave.json
+ */
+const credentialsPath = process.env.FIREBASE_CREDENTIALS ||
+                        path.join(__dirname,
+                                  '..',
+                                  '..',
+                                  'rentauto-dced6-firebase-adminsdk-d0ug3-7f6b73c66d.json');
 
-function getFirebaseApp() {
-  if (app) return app;
+const serviceAccount = require(credentialsPath);
 
-  const raw = process.env.FIREBASE_SERVICE_ACCOUNT;
-  if (!raw) {
-    throw new Error("Falta FIREBASE_SERVICE_ACCOUNT");
-  }
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  // pon tu bucket o coméntalo si no usas Cloud Storage
+  storageBucket: 'rentauto-dced6.appspot.com'
+});
 
-  const serviceAccount = JSON.parse(raw);
-
-  app = admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-    storageBucket: process.env.FIREBASE_STORAGE_BUCKET
-  });
-
-  return app;
-}
-
-module.exports = getFirebaseApp;
+/**
+ * Exporta la instancia para reutilizar:
+ *   const { admin } = require('../config/firebase.config');
+ */
+module.exports = { admin };
