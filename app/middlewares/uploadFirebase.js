@@ -92,6 +92,7 @@ const bucket = getStorage(app).bucket();
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
+
 const uploadToFirebase = async (req, res, next) => {
   try {
     if (!req.file) return next();

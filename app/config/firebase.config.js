@@ -1,27 +1,31 @@
-// app/config/firebase.config.js
-const admin = require('firebase-admin');
-const path  = require('path');
+const admin = require("firebase-admin");
 
-/**
- * Railway → Variables (type: File) → FIREBASE_CREDENTIALS
- * Si corres localmente, pon process.env.FIREBASE_CREDENTIALS=./ruta/clave.json
- */
-const credentialsPath = process.env.FIREBASE_CREDENTIALS ||
-                        path.join(__dirname,
-                                  '..',
-                                  '..',
-                                  'rentauto-dced6-firebase-adminsdk-d0ug3-7f6b73c66d.json');
+let app;
 
-const serviceAccount = require(credentialsPath);
+function getFirebaseApp() {
+  if (app) return app;
 
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  // pon tu bucket o coméntalo si no usas Cloud Storage
-  storageBucket: 'rentauto-dced6.appspot.com'
-});
+  const base64 = process.env.FIREBASE_SERVICE_ACCOUNT_BASE64;
 
-/**
- * Exporta la instancia para reutilizar:
- *   const { admin } = require('../config/firebase.config');
- */
-module.exports = { admin };
+  if (!base64) {
+    throw new Error("Falta FIREBASE_SERVICE_ACCOUNT_BASE64");
+  }
+
+  let serviceAccount;
+
+  try {
+    const json = Buffer.from(base64, "base64").toString("utf8");
+    serviceAccount = JSON.parse(json);
+  } catch (error) {
+    throw new Error("Error al parsear FIREBASE_SERVICE_ACCOUNT_BASE64");
+  }
+
+  app = admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+    storageBucket: process.env.FIREBASE_STORAGE_BUCKET
+  });
+
+  return app;
+}
+
+module.exports = getFirebaseApp;
