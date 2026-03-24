@@ -6,7 +6,7 @@ module.exports = (app) => {
     const vehiculos = require("../../controllers/vehiculos/vehiculos.controller");
 
     var router = require("express").Router();
-
+    router.post("/", uploadToFirebaseStorage, vehiculos.createVehiculo);
     router.get("/", vehiculos.getVehiculos); // Retrieve all
     router.get("/data", vehiculos.getInputData);
     router.get("/paginados", vehiculos.getVehiculosPaginados);
