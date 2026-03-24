@@ -7,11 +7,10 @@ const bcrypt = require("bcrypt");
 const { Sequelize } = require("sequelize");
 
 const sequelize = new Sequelize(process.env.DATABASE_URL, {
-  dialect: "postgres",
-  protocol: "postgres",
-  timezone: timezone,
+  dialect: 'postgres',
+  protocol: 'postgres',
   dialectOptions: {
-    ssl: { 
+    ssl: {
       require: true,
       rejectUnauthorized: false
     }
