@@ -14,12 +14,12 @@ exports.createCliente = async (req, res) => {
         }
 
         // Si no se solicita omitir la validación del INE, realizarla
-        if (!skipINEValidation) {
+/*         if (!skipINEValidation) {
             const ineResponse = await nubariumService.validarINE(cic, identificadorCiudadano);
             if (ineResponse.estatus !== 'OK' || ineResponse.mensaje !== "Esta vigente como medio de identificacion y puede votar") {
                 return res.status(400).json({ message: "El INE no está vigente o los datos no son correctos" });
             }
-        }
+        } */
 
         // Validar CURP usando el servicio
         /* const curpResponse = await nubariumService.validarCURP(curp);

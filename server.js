@@ -17,8 +17,7 @@ app.use(cors(corsOptions));
 app.use(session({
   resave: false,
   saveUninitialized: true,
-  secret: process.env.ACCESS_TOKEN_SECRET || 'supersecret'
-
+  secret: 'nothing'
 }));
 
 const db = require("./app/models");
@@ -27,7 +26,7 @@ const db = require("./app/models");
 async function testConnection() {
   try {
     await db.sequelize.authenticate();
-    
+    await db.sequelize.sync();
     console.log("Connected to Database");
   } catch (e) {
     console.log(e.message);
@@ -67,6 +66,6 @@ require("./app/routes/app.routes")(app);
 
 const PORT = process.env.PORT || 8080;
 
-app.listen(PORT, '0.0.0.0', () => {
-    console.log(`Server is running on port ${PORT}`);
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
