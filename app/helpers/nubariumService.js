@@ -56,8 +56,8 @@ const getJWT = async (retryCount = 0) => {
 // Función para verificar si el token ha expirado y renovarlo si es necesario
 const checkAndRenewToken = async () => {
     if (!jwtToken || Date.now() >= tokenExpiry) {
-        console.log("Token caducado o no disponible. Renovando...");
-        await getJWT();
+/*         console.log("Token caducado o no disponible. Renovando...");
+ */        await getJWT();
     } else {
         //console.log("Token válido. No es necesario renovarlo.");
     }
